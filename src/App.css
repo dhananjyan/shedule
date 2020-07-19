@@ -1,38 +1,72 @@
-.App {
-  text-align: center;
+*,*::before, *::after {
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+*{
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+body {
+  background-color: #7CD0FF;
+	height: 100vh;
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background-color: #FFFFFF;
+  padding: 30px 50px;
+	border-radius: 6px;
+  display: flex;
+  justify-content: center;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.heading {
+	font-size: 2.5rem;
+	font-family: monospace;
+	color: #000000;
+  margin-bottom: 30px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.input { 
+	padding: 15px;
+	margin-top: 20px;
+	border-radius: 10px;
+	border: 3px solid #EEEEEE;
+	padding-left:60px;
+}
+.btn {
+	cursor: pointer;
+	padding: .7em 3em;	
+	outline: none;
+	border: none;
+	margin-top: 30px;
+	background-color: #7CD0FF;
+	border-radius: 5px;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+
+input[type="text"]:hover,input[type="email"]:hover,input[type="password"]:hover{
+	border: 3px solid #7CD0FF;
+}
+input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus {
+	outline: none;
+	border: 3px solid #7CD0FF;
+}
+.btn:focus {
+	box-shadow: 0px 1.5px 1.5px rgba(0, 0, 0, 0.25);
+}
+.btn:not(:focus) {
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.last {
+	padding-top: 35px;
 }
