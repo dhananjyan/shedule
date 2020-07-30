@@ -1,0 +1,78 @@
+
+#user-component {
+    display: flex;
+}
+#user-component .main-section {
+	width: 100vw;
+	height: 100vh;
+}
+#user-component .sidebar {
+    background: #393333;
+    height: 100vh;
+    width: 250px;
+}
+
+
+#user-component .main-section header {
+    padding: 5px;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    background-color: #7CD0FF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #FFFFFF;
+
+}
+
+#user-component .main-section header .inner {    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#user-component header .sidebar-toggle-button {
+    padding-left: 1em;
+}
+
+#user-component .main-section header .logo {
+    padding-left: 1em;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+#user-component .main-section header .username, .userimage {
+    padding-right: 1em;
+}
+
+#user-component .main-section header .sidebar-toggle-button {
+    cursor: pointer;
+}
+
+#user-component nav {
+	margin-top: 60px;
+	padding: 15px;
+}
+
+#user-component nav ul {
+	list-style-type: none;
+	display: flex;
+	flex-direction: column;
+}
+
+#user-component nav ul li{
+	padding: 15px 1px 10px 1px;
+	border-bottom: 1.4px solid #5F5F5F;
+}
+
+#user-component nav ul li span {
+    font-style: normal;
+    font-weight: 600;
+    font-size: .85rem;
+    line-height: 16px;
+    cursor: pointer;
+    color: #eeeeee;
+}

@@ -1,24 +1,37 @@
-import React, { useState } from 'react';
-import './App.css';
-import Form from './components/Form';
-import Inputs from './components/Inputs';
-import SubmitBtn from './components/SubmitBtn';
-
+import React from 'react'
+import Login from './components/Login'
+import Register from './components/Register'
+import { useDatas } from './context/DataContext'
+import {
+  Switch,
+  Route
+} from "react-router-dom"
+import User from './components/User'
 
 function App() {
-
-  let card = 'card'
-  const [isLoginPage, setIsLoginPage] = useState(false)
+  const { data: {datas:{login: isLoggedIn}}, addData } = useDatas()
+  function addDatas(name, value) {
+    addData(name, value)
+  }
   return (
-    <div className={card}>
-      <div className='heading'>{isLoginPage? 'Login' : 'Register'}</div>
-      <Form>
-        <Inputs page={isLoginPage? 'Login' : 'Register'}/>
-        <SubmitBtn name={isLoginPage? 'Login' : 'Register'}/>
-      </Form>
-      <div className={'last'}>{isLoginPage? 'Doesn’t have an account yet? ' : 'Already have an account ? '}<span style={{cursor:'pointer',color:'#7CD0FF'}} onClick={()=>setIsLoginPage(!isLoginPage)}>{isLoginPage? 'Register' : 'Login'}</span></div>
-    </div>
+      <Switch>
+        <Route
+          path="/login"
+          render={()=><Login addDatas={addDatas}/>}
+          
+        />
+        <Route
+          path="/register"
+          component={Register}
+        />
+        {isLoggedIn && (
+          <Route
+            path="/user"
+            component={User}
+          /> 
+        )}
+    </Switch>
   )
 }
 
-export default App;
+export default App

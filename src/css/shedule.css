@@ -1,0 +1,26 @@
+#shedule-component {
+	padding: 50px 0 50px 0;
+	height: 93vh;
+	width: 100%;
+	overflow: auto;
+	display: grid;
+	grid-template-columns: repeat(3, 250px);
+	justify-content: space-around;
+	grid-row-gap: 50px;
+}
+#shedule-component .items {
+	width: 250px;
+	height: 250px;
+	justify-content: center;
+	text-align: center;
+	align-items: center;
+	align-content: center;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+#shedule-component .items img {
+	margin: 35px 0 0px 0;
+}
+#shedule-component .items p {
+	margin: 15px 0 0px 0;
+	font-weight: bolder;
+}

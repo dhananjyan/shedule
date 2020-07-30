@@ -1,0 +1,92 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width:100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+  }
+  
+  #modal .modal-main {
+      border-radius: 10px;
+      padding: 20px;
+    position:fixed;
+    background: #7CD0FF;
+    width: 40%;
+    height: auto;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #modal .display-block {
+    display: block;
+  }
+  
+  #modal .display-none {
+    display: none;
+  }
+  
+  #modal .heading {
+      color:white;
+      font-weight: 700;
+      font-size: 1.4rem;
+      padding-bottom: 40px;
+      text-align: center;
+  }
+  
+  
+  #modal .input { 
+      padding: 10px;
+      width: 400px;
+      margin: auto;
+      margin-top: 20px;
+      border-radius: 10px;
+      border: 1px solid #EEEEEE;
+      padding-left:30px;
+      background-color: #EEEEEE;
+      font-weight: 600;
+      appearance: none;
+      padding-right: 10px;
+  }
+  #modal .btn {
+      cursor: pointer;
+      padding: .7em 3em;  
+      outline: none;
+      border: none;
+      margin: auto;
+      margin-top: 40px;
+      margin-bottom: 40px;
+      background-color: #FFFFFF;
+      border-radius: 5px;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      color: #7CD0FF;
+      font-weight: bold;
+  }
+  
+  #modal input[type="text"]:focus {
+      outline: none;
+      border: 1px solid black;
+  }
+  #modal .btn:active {
+      box-shadow: 0px 1.5px 1.5px rgba(0, 0, 0, 0.25);
+  }
+  #modal .btn:not(:active) {
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+  #modal .form-group {
+      margin:auto;
+  }
+  #modal .close{
+      cursor: pointer;
+          margin-left: auto;                                              
+      color: #FFFFFF;
+      font-weight: 900;
+      font-size: 1.3rem;
+  }
+
+  #modal .btn:disabled {
+	cursor: not-allowed;
+}
