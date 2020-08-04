@@ -62,19 +62,22 @@ export class Login extends Component {
         }
         
         mutate({ variables: { username: formData.username, password: formData.password } })
-        .then(() => { 
-          addDatas('username', formData.username)
-          addDatas('login', true)
-          this.setState({ loading: false})
-          this.setState({ isLogin: true})
+        .then((data) => { 
+          if(data.data.login){
+            addDatas('username', data.data.login.username)
+            addDatas('email', data.data.login.email)
+            addDatas('userId', data.data.login.id)
+            addDatas('login', true)
+            this.setState({ loading: false})
+            this.setState({ isLogin: true})
+          } else {
+            this.setState({message: 'Username or password incorrect'})
+            this.setState({ loading: false })
+          }
         })
         .catch(() => {
           this.setState({message: 'Username or password incorrect'})
           this.setState({ loading: false })
-          
-          // console.log(res)
-          // const errors = res.graphQLErrors.map(error => error.message);
-          // console.log(errors)
         });
         // fetch('http://localhost:5000/graphql', {
         //     method: 'POST',

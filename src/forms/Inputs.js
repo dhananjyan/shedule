@@ -92,6 +92,22 @@ export const Select = props => {
     );
 }
 
+export const TextareaInput = props => {
+
+    let formControl = "form-control"
+    if (props.touched && !props.valid) {
+        formControl = 'form-control control-error'
+    }
+
+    return (
+        <div className="form-group">
+            <textarea type="text" className={formControl} {...props}>
+                
+            </textarea>
+        </div>
+    );
+}
+
 export const Radio = props => {
 
     let formControl = "form-control";

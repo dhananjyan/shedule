@@ -96,4 +96,14 @@ export const modalFormControls = {
         touched: false,
         className: 'input',
     },
+    desc: {
+        value: '',
+        placeholder: 'Description',
+        valid: false,
+        touched: false,
+        className: 'input',
+        validationRules: {
+          isRequired: true,
+        },
+    }
 }

@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { DateInput, Select, TimeInput } from '../forms/Inputs'
+import { DateInput, Select, TextareaInput } from '../forms/Inputs'
+import { useDatas } from '../context/DataContext'
 import TimePicker from 'rc-time-picker';
 import 'rc-time-picker/assets/index.css';
 import Validate from '../forms/Validate'
 import '../css/modal.css'
 import Button from '../buttons/Button'
-import { useQuery, gql } from '@apollo/client'
-import {categoriedDoctors} from '../query/query'
+import { useQuery, useMutation } from '@apollo/client'
+import {categoriedDoctors, addEventQuery} from '../query/query'
 import { modalFormControls } from '../forms/Forms'
 import moment from 'moment'
 
 export default function Modal({ category: {name, id}, close }) {
-    
+  const { data: {datas: { userId }}} = useDatas()
+  const [addEvent] = useMutation(addEventQuery)
   const [loadings, setLoadings] = useState(false)
   const [busyTimes, setBusyTimes] = useState(null)
   const [formIsValid, setFormIsValid] = useState(false)
@@ -20,7 +22,7 @@ export default function Modal({ category: {name, id}, close }) {
     useEffect(() => {
       if(!loading){
         let options = data.category.providers.map((doctor)=>{
-            return {value: doctor.username, displayValue: doctor.username}
+            return {value: doctor.id, displayValue: doctor.username}
         })
         let allControls = {
           ...formControls
@@ -36,9 +38,9 @@ export default function Modal({ category: {name, id}, close }) {
     useEffect(() => {
       if(!loading){ 
         data.category.providers.map((provider) => {
-          if(provider.username === formControls['doctor'].value) {
+          if(provider.id === formControls['doctor'].value) {
             let times = provider.events.map((event)=> {
-              return { start: moment(event.start).zone(-330).format("h:mm A"), end: moment(event.end).zone(-330).format("h:mm A")}
+              return { date: moment(event.start).zone(-330).format("YYYY-MM-DD"), start: moment(event.start).zone(-330).format("h:mm A"), end: moment(event.end).zone(-330).format("h:mm A")}
             })
             console.log(times)
             setBusyTimes(times)
@@ -47,86 +49,98 @@ export default function Modal({ category: {name, id}, close }) {
       }
       
     },[formControls['doctor'].value])
-    useEffect(() => {
-      function giveUtc(start) {
-        var t = moment().format("YYYY-MM-DD")
-        var t1 = t + " " + start
-        return moment(t1, "YYYY-MM-DD h:mm A").format()
+    // useEffect(() => {
+    //   if(!loading) {
+    //     let times = busyTimes.filter((times) => {
+    //       return times.date === formControls['date'].value
+    //     })
+    //     console.log(busyTimes)
+    //     console.log(times)
+    //     setBusyTimes(times)
+    //   }
+    //   console.log('date changed')
+    // },[formControls['date'].value])
+
+    
+    // useEffect(() => {
+    //   function giveUtc(start) {
+    //     var t = moment().format("YYYY-MM-DD")
+    //     var t1 = t + " " + start
+    //     return moment(t1, "YYYY-MM-DD h:mm A").format()
       
-      }
+    //   }
       
       
-      if(busyTimes){
-      busyTimes.sort((a, b) => {
-        var utcA = giveUtc(a.start)
-        var utcB = giveUtc(b.start)
-        if (utcA < utcB) {
-          return -1
-        }
-        if (utcA > utcB) {
-          return 1
-        }
-        return 0
-      })
+    //   if(busyTimes){
+    //   busyTimes.sort((a, b) => {
+    //     var utcA = giveUtc(a.start)
+    //     var utcB = giveUtc(b.start)
+    //     if (utcA < utcB) {
+    //       return -1
+    //     }
+    //     if (utcA > utcB) {
+    //       return 1
+    //     }
+    //     return 0
+    //   })
       
-      const availableTimeArray = []
+    //   const availableTimeArray = []
       
-      let endTimeFarthest = moment(giveUtc("0.00 AM"))
-      let startTimeMinimum = moment(giveUtc("12.59 PM"))
+    //   let endTimeFarthest = moment(giveUtc("0.00 AM"))
+    //   let startTimeMinimum = moment(giveUtc("12.59 PM"))
       
-      busyTimes.forEach((element, index) => {
-        let currentEndTime = moment(giveUtc(element.end))
-        const currentStartTime = moment(giveUtc(element.start))
-        if (currentStartTime.isBefore(startTimeMinimum)) {
-          startTimeMinimum = currentStartTime
-        }
-        if (currentEndTime.isAfter(endTimeFarthest)) {
-          endTimeFarthest = currentEndTime
-        }
-        /* console.log(startTimeMinimum.format("h:mm A"), endTimeFarthest.format("h:mm A")) */
-        if (index === busyTimes.length - 1) {
-          if (busyTimes.length === 1) {
-            availableTimeArray.push({
-              start: "00:00 AM",
-              end: currentStartTime.format("h:mm A")
-            })
-          }
-          availableTimeArray.push({
-            //start: currentEndTime.format("h:mm A"),
-            start: endTimeFarthest.format("h:mm A"),
-            end: "11.59 PM"
-          })
+    //   busyTimes.forEach((element, index) => {
+    //     let currentEndTime = moment(giveUtc(element.end))
+    //     const currentStartTime = moment(giveUtc(element.start))
+    //     if (currentStartTime.isBefore(startTimeMinimum)) {
+    //       startTimeMinimum = currentStartTime
+    //     }
+    //     if (currentEndTime.isAfter(endTimeFarthest)) {
+    //       endTimeFarthest = currentEndTime
+    //     }
+    //     /* console.log(startTimeMinimum.format("h:mm A"), endTimeFarthest.format("h:mm A")) */
+    //     if (index === busyTimes.length - 1) {
+    //       if (busyTimes.length === 1) {
+    //         availableTimeArray.push({
+    //           start: "00:00 AM",
+    //           end: currentStartTime.format("h:mm A")
+    //         })
+    //       }
+    //       availableTimeArray.push({
+    //         //start: currentEndTime.format("h:mm A"),
+    //         start: endTimeFarthest.format("h:mm A"),
+    //         end: "11.59 PM"
+    //       })
       
-        } else {
-          const nextBusyTime = busyTimes[index + 1]
-          const nextStartTime = moment(giveUtc(nextBusyTime.start))
-          if (index === 0) {
-            availableTimeArray.push({
-              start: "00:00 AM",
-              end: currentStartTime.format("h:mm A")
-            })
-          }
-          let endTimeToCompare = currentEndTime.isBefore(endTimeFarthest) ? endTimeFarthest : currentEndTime
-          if (endTimeToCompare.isBefore(nextStartTime)) {
-            availableTimeArray.push({ 
-              start: endTimeToCompare.format("h:mm A"),
-              end: nextStartTime.format("h:mm A")
-            })
-          }
+    //     } else {
+    //       const nextBusyTime = busyTimes[index + 1]
+    //       const nextStartTime = moment(giveUtc(nextBusyTime.start))
+    //       if (index === 0) {
+    //         availableTimeArray.push({
+    //           start: "00:00 AM",
+    //           end: currentStartTime.format("h:mm A")
+    //         })
+    //       }
+    //       let endTimeToCompare = currentEndTime.isBefore(endTimeFarthest) ? endTimeFarthest : currentEndTime
+    //       if (endTimeToCompare.isBefore(nextStartTime)) {
+    //         availableTimeArray.push({ 
+    //           start: endTimeToCompare.format("h:mm A"),
+    //           end: nextStartTime.format("h:mm A")
+    //         })
+    //       }
       
-        }
+    //     }
       
-      })
-      console.log(availableTimeArray)
-    }
-    },[busyTimes])
+    //   })
+    //   console.log(availableTimeArray)
+    // }
+    // },[busyTimes])
     let display = 'display-block'
     
     const changeHandler = (event) => {
         console.log('changehandler')
           const name = event.target.name
           const value = event.target.value
-    
           const updatedControls = {
             ...formControls
           }
@@ -159,7 +173,16 @@ export default function Modal({ category: {name, id}, close }) {
         }
         updatedFormElement.value = value;
         updatedFormElement.touched = true;
-        updatedFormElement.valid = Validate(value, updatedFormElement.validationRules)
+        
+        let times = busyTimes.filter((times) => {
+          return times.date === formControls['date'].value
+        })
+        
+        updatedFormElement.valid = times.every(time => {
+          return !value.isBetween(moment(time.start,'h:mm A'), moment(time.end,'h:mm A'))
+        });
+        console.log("Time is valid or not"+updatedFormElement.valid)
+        // updatedFormElement.valid = Validate(value, updatedFormElement.validationRules)
   
         updatedControls['time'] = updatedFormElement
   
@@ -167,18 +190,24 @@ export default function Modal({ category: {name, id}, close }) {
         for (let inputIdentifier in updatedControls) {
           formIsValid = updatedControls[inputIdentifier].valid && formIsValid
         }
-        formIsValid = busyTimes.some(time => {
-          return !value.isBetween(moment(time.start,'h:mm A'), moment(time.end,'h:mm A'))
-        });
-        console.log("formis valid: "+formIsValid)
+        console.log(busyTimes)
         console.log(updatedControls)
-        console.log(formIsValid)
+        console.log("Form is valid or not: "+formIsValid)
         setFormControls(updatedControls)
         setFormIsValid(formIsValid)
       }
       const formSubmitHandler = () => {
-          setLoadings(true)
-          alert('success')
+        setLoadings(true)
+          let time = moment(formControls['date'].value + " " + moment(formControls['time'].value).format('h:mm A'))
+          let start = time.format()
+          let end = time.add(30, 'm').format()
+          addEvent({ variables: { 
+            title: formControls['desc'].value,
+            start,
+            end,
+            userId,
+            providerId: formControls['doctor'].value
+           } }).then((data)=>close())
           setLoadings(false)
       }
     return (
@@ -204,15 +233,7 @@ export default function Modal({ category: {name, id}, close }) {
                     valid={formControls.date.valid}
                     className={formControls.date.className}
                 />}
-                {formControls['date'].valid && <TimeInput name="time" 
-                    placeholder={formControls.time.placeholder}
-                    value={formControls.time.value}
-                    onChange={changeHandler}
-                    touched={formControls.time.touched}
-                    valid={formControls.time.valid}
-                    className={formControls.time.className}
-                />}
-                <TimePicker
+                {formControls['date'].valid && <TimePicker
                   placeholder={formControls.time.placeholder}
                   value={formControls.time.value}
                   showSecond={false}
@@ -221,7 +242,17 @@ export default function Modal({ category: {name, id}, close }) {
                   name={'time'}
                   onChange={changeTimeHandler}
                   className={formControls.time.className}
-                />
+                />}
+                {formControls['time'].valid && <TextareaInput
+                    name={'desc'}
+                    placeholder={formControls.desc.placeholder}
+                    value={formControls.desc.value}
+                    onChange={changeHandler}
+                    touched={formControls.desc.touched}
+                    valid={formControls.desc.valid}
+                    className={formControls.desc.className}
+                />}
+                
                 <Button onClick={formSubmitHandler} 
                   disabled={!formIsValid}
                   className='btn' 

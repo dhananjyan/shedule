@@ -13,6 +13,7 @@ export const addUserQuery = graphql(gql`
 export const loginQuery = graphql(gql`
     mutation Login($username: String, $password: String){
         login(username:$username, password:$password){
+            id
             username 
             email
         }
@@ -40,6 +41,27 @@ export const categoriedDoctors = gql`
                 }
                 
             }    
+        }
+    }
+`
+
+export const addEventQuery = gql`
+    mutation addEvent(
+        $title: String,
+        $start: DateTime,
+        $end: DateTime,
+        $providerId: ID,
+        $userId: ID
+        ) {
+            addEvent(
+            title:$title,
+            start:$start,
+            end:$end,
+            providerId:$providerId
+            userId:$userId
+        ) {
+            start
+            end
         }
     }
 `
