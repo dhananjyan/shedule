@@ -17,6 +17,9 @@ ReactDOM.render(
     <DataProvider>
       <Router>
         <App />
+        <h1>
+          Welcome
+        </h1>
       </Router>
     </DataProvider>
   </ApolloProvider>
