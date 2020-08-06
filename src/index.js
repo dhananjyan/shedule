@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import { DataProvider } from './context/DataContext'
 import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider } from '@apollo/client'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router, Redirect } from 'react-router-dom'
 
-const httpLink = new HttpLink({ uri: 'https://firstapis.herokuapp.com/graphql' })
+const httpLink = new HttpLink({ uri: 'http://localhost:5000/graphql' })
 const client = new ApolloClient({
   link: httpLink,
   cache: new InMemoryCache(),
@@ -18,7 +18,7 @@ ReactDOM.render(
       <Router>
         <App />
         <h1>
-          Welcome
+          <Redirect to="/login">login</Redirect>
         </h1>
       </Router>
     </DataProvider>
