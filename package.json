@@ -11,7 +11,7 @@
     "ant": "^0.2.0",
     "apollo-boost": "^0.4.9",
     "apollo-client-preset": "^1.0.8",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "graphql": "^15.3.0",
     "graphql-tag": "^2.10.4",
     "moment": "^2.27.0",
